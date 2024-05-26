@@ -35,8 +35,10 @@ const App: React.FC = () => {
 
   return (
     <div className="w-full flex items-center justify-center min-h-screen bg-gray-100">
+      
       <form onSubmit={handleSubmit} className="w-full p-8 bg-white rounded shadow-md">
-        <div className='w-full flex justify-end'>
+        <h4 className="mb-6 text-3xl font-bold text-gray-800 text-center">Lo Jueve</h4>
+        <div className='w-full flex justify-end'>        
           <h4 className="mb-6 text-gray-600">¿Arquero?</h4>
         </div>
         {jugadores.map((jugador, index) => (
