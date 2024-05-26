@@ -6,6 +6,7 @@ const App: React.FC = () => {
   const [jugadores, setJugadores] = useState<string[]>(Array(15).fill(''));
   const [arqueros, setArqueros] = useState<string[]>([]);
   const [equipos, setEquipos] = useState<string[][]>();
+  const [textoBoton, setTextoBoton] = useState<string>("Armar Equipos");
 
   const handleChange = (index: number, value: string) => {
     const nuevosJugadores = [...jugadores];
@@ -13,10 +14,14 @@ const App: React.FC = () => {
     setJugadores(nuevosJugadores);
   };
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {    
     event.preventDefault();
-    const nuevosEquipos = armarEquipos(jugadores, arqueros);
-    setEquipos(nuevosEquipos)
+    console.log(jugadores.length)
+    if (jugadores.length === 15 && arqueros.length === 3) {
+      const nuevosEquipos = armarEquipos(jugadores, arqueros);
+      setEquipos(nuevosEquipos)
+      setTextoBoton("Armar de nuevo")
+    }
   };
 
   function agregarJugadorComoArquero(jugador: string) {
@@ -59,10 +64,10 @@ const App: React.FC = () => {
         ))}
         <div className=''>
           {equipos && equipos.map((equipo, i) => 
-          <div className='mb-3'>
-            <p className='font-medium'>Equipo {i+1}</p>
-            <ul key={equipo.toString()}>            
-              {equipo.map(jug => <div>{jug}</div>)}
+          <div key={i} className='mb-4'>
+            <p className='font-bold'>Equipo {i+1}</p>
+            <ul>
+              {equipo.map(jug => <div key={jug}>{jug}</div>)}
             </ul>
           </div>
           )}
@@ -71,7 +76,7 @@ const App: React.FC = () => {
           type="submit"
           className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-6 px-4 rounded-xl focus:outline-none focus:shadow-outline"
         >
-          Armar Equipos
+          {textoBoton}
         </button>
       </form>
     </div>
