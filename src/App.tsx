@@ -1,9 +1,11 @@
 import { useState, ChangeEvent, FormEvent } from 'react';
 import Switch from './Switch';
+import { armarEquipos } from './logica';
 
 const App: React.FC = () => {
   const [jugadores, setJugadores] = useState<string[]>(Array(15).fill(''));
   const [arqueros, setArqueros] = useState<string[]>([]);
+  const [equipos, setEquipos] = useState<string[][]>();
 
   const handleChange = (index: number, value: string) => {
     const nuevosJugadores = [...jugadores];
@@ -13,12 +15,8 @@ const App: React.FC = () => {
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    armarEquipos(jugadores);
-  };
-
-  const armarEquipos = (jugadores: string[]) => {
-    // Aquí puedes implementar la lógica para armar los equipos
-    console.log('Jugadores:', jugadores);
+    const nuevosEquipos = armarEquipos(jugadores, arqueros);
+    setEquipos(nuevosEquipos)
   };
 
   function agregarJugadorComoArquero(jugador: string) {
@@ -57,6 +55,16 @@ const App: React.FC = () => {
             </div>  
           </div>
         ))}
+        <div className=''>
+          {equipos && equipos.map((equipo, i) => 
+          <div className='mb-3'>
+            <p className='font-medium'>Equipo {i+1}</p>
+            <ul key={equipo.toString()}>            
+              {equipo.map(jug => <div>{jug}</div>)}
+            </ul>
+          </div>
+          )}
+        </div>
         <button
           type="submit"
           className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-6 px-4 rounded-xl focus:outline-none focus:shadow-outline"
