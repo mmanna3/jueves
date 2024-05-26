@@ -1,7 +1,13 @@
-import { useState, ChangeEvent, FormEvent } from 'react';
+import { useState, ChangeEvent, FormEvent, useEffect } from 'react';
+import Switch from './Switch';
 
 const App: React.FC = () => {
   const [jugadores, setJugadores] = useState<string[]>(Array(15).fill(''));
+  const [arqueros, setArqueros] = useState<string[]>([]);
+
+  useEffect(() => {
+    console.log(arqueros)
+  }, [arqueros])
 
   const handleChange = (index: number, value: string) => {
     const nuevosJugadores = [...jugadores];
@@ -19,15 +25,21 @@ const App: React.FC = () => {
     console.log('Jugadores:', jugadores);
   };
 
+  function agregarJugadorComoArquero(jugador: string) {
+    if(arqueros.length === 3)
+      return;
+
+    arqueros.includes(jugador) ? 
+      setArqueros(arquerosActuales => arquerosActuales.filter(arquero => arquero !== jugador)) : 
+      setArqueros(arquerosActuales => [...arquerosActuales, jugador]);
+  }
+
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <form onSubmit={handleSubmit} className="w-full max-w-lg p-8 bg-white rounded shadow-md">
+    <div className="w-full flex items-center justify-center min-h-screen bg-gray-100">
+      <form onSubmit={handleSubmit} className="w-full p-8 bg-white rounded shadow-md">
         <h2 className="text-2xl font-bold mb-6">Ingresar nombres de jugadores</h2>
         {jugadores.map((jugador, index) => (
-          <div key={index} className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2">
-              Jugador {index + 1}
-            </label>
+          <div key={index} className="mb-4 gap-6 flex">
             <input
               type="text"
               value={jugador}
@@ -35,6 +47,7 @@ const App: React.FC = () => {
               className="w-full px-3 py-2 border rounded shadow-sm focus:outline-none focus:ring focus:border-blue-300"
               placeholder={`Nombre del jugador ${index + 1}`}
             />
+            <Switch sePuedenAgregarMasArqueros={arqueros.length < 2} onChange={() => agregarJugadorComoArquero(jugador)}/>
           </div>
         ))}
         <button
