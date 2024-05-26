@@ -37,7 +37,7 @@ const App: React.FC = () => {
   return (
     <div className="w-full flex items-center justify-center min-h-screen bg-gray-100">
       <form onSubmit={handleSubmit} className="w-full p-8 bg-white rounded shadow-md">
-        <h2 className="text-2xl font-bold mb-6">Ingresar nombres de jugadores</h2>
+        <h2 className="text-2xl font-bold mb-6">Ingresar jugadores</h2>
         {jugadores.map((jugador, index) => (
           <div key={index} className="mb-4 gap-6 flex">
             <input
@@ -45,7 +45,7 @@ const App: React.FC = () => {
               value={jugador}
               onChange={(e: ChangeEvent<HTMLInputElement>) => handleChange(index, e.target.value)}
               className="w-full px-3 py-2 border rounded shadow-sm focus:outline-none focus:ring focus:border-blue-300"
-              placeholder={`Nombre del jugador ${index + 1}`}
+              placeholder={`Jugador ${index + 1}`}
             />
             <Switch sePuedenAgregarMasArqueros={arqueros.length < 2} onChange={() => agregarJugadorComoArquero(jugador)}/>
           </div>
