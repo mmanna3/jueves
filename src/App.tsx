@@ -1,35 +1,51 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState, ChangeEvent, FormEvent } from 'react';
 
-function App() {
-  const [count, setCount] = useState(0)
+const App: React.FC = () => {
+  const [jugadores, setJugadores] = useState<string[]>(Array(15).fill(''));
+
+  const handleChange = (index: number, value: string) => {
+    const nuevosJugadores = [...jugadores];
+    nuevosJugadores[index] = value;
+    setJugadores(nuevosJugadores);
+  };
+
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    armarEquipos(jugadores);
+  };
+
+  const armarEquipos = (jugadores: string[]) => {
+    // Aquí puedes implementar la lógica para armar los equipos
+    console.log('Jugadores:', jugadores);
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1 className='text-red-500'>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <form onSubmit={handleSubmit} className="w-full max-w-lg p-8 bg-white rounded shadow-md">
+        <h2 className="text-2xl font-bold mb-6">Ingresar nombres de jugadores</h2>
+        {jugadores.map((jugador, index) => (
+          <div key={index} className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2">
+              Jugador {index + 1}
+            </label>
+            <input
+              type="text"
+              value={jugador}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => handleChange(index, e.target.value)}
+              className="w-full px-3 py-2 border rounded shadow-sm focus:outline-none focus:ring focus:border-blue-300"
+              placeholder={`Nombre del jugador ${index + 1}`}
+            />
+          </div>
+        ))}
+        <button
+          type="submit"
+          className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+        >
+          Armar Equipos
         </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+      </form>
+    </div>
+  );
 }
 
-export default App
+export default App;
