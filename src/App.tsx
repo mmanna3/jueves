@@ -38,24 +38,28 @@ const App: React.FC = () => {
   return (
     <div className="w-full flex items-center justify-center min-h-screen bg-gray-100">
       <form onSubmit={handleSubmit} className="w-full p-8 bg-white rounded shadow-md">
-        <h2 className="text-2xl font-bold mb-6">Ingresar jugadores</h2>
+        <div className='w-full flex justify-end'>
+          <h4 className="mb-6 text-gray-600">¿Arquero?</h4>
+        </div>
         {jugadores.map((jugador, index) => (
-          <div key={index} className="mb-4 gap-6 flex">
+          <div key={index} className="mb-4 gap-6 flex items-center">
             <input
               type="text"
               value={jugador}
               onChange={(e: ChangeEvent<HTMLInputElement>) => handleChange(index, e.target.value)}
-              className="w-full px-3 py-2 border rounded shadow-sm focus:outline-none focus:ring focus:border-blue-300"
+              className="w-full px-3 py-3 border rounded-xl shadow-sm focus:outline-none focus:ring focus:border-blue-300"
               placeholder={`Jugador ${index + 1}`}
             />
-            <Switch 
-            onChange={() => agregarJugadorComoArquero(jugador)} 
-            isEnabled={arqueros.includes(jugador)}/>
+            <div className='flex items-center'>
+              <Switch 
+              onChange={() => agregarJugadorComoArquero(jugador)} 
+              isEnabled={arqueros.includes(jugador)}/>
+            </div>  
           </div>
         ))}
         <button
           type="submit"
-          className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-6 px-4 rounded-xl focus:outline-none focus:shadow-outline"
         >
           Armar Equipos
         </button>
