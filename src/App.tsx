@@ -1,13 +1,9 @@
-import { useState, ChangeEvent, FormEvent, useEffect } from 'react';
+import { useState, ChangeEvent, FormEvent } from 'react';
 import Switch from './Switch';
 
 const App: React.FC = () => {
   const [jugadores, setJugadores] = useState<string[]>(Array(15).fill(''));
   const [arqueros, setArqueros] = useState<string[]>([]);
-
-  useEffect(() => {
-    console.log(arqueros)
-  }, [arqueros])
 
   const handleChange = (index: number, value: string) => {
     const nuevosJugadores = [...jugadores];
@@ -26,12 +22,17 @@ const App: React.FC = () => {
   };
 
   function agregarJugadorComoArquero(jugador: string) {
-    if(arqueros.length === 3)
+    if (jugador === '')
       return;
 
-    arqueros.includes(jugador) ? 
-      setArqueros(arquerosActuales => arquerosActuales.filter(arquero => arquero !== jugador)) : 
-      setArqueros(arquerosActuales => [...arquerosActuales, jugador]);
+    if (arqueros.includes(jugador)) {
+      setArqueros(arquerosActuales => {
+        const arquerosSinElJugador = arquerosActuales.filter(arquero => arquero !== jugador)
+        return arquerosSinElJugador
+      })
+    } else
+      if (arqueros.length < 3)
+        setArqueros(arquerosActuales => [...arquerosActuales, jugador]);
   }
 
   return (
@@ -47,7 +48,9 @@ const App: React.FC = () => {
               className="w-full px-3 py-2 border rounded shadow-sm focus:outline-none focus:ring focus:border-blue-300"
               placeholder={`Jugador ${index + 1}`}
             />
-            <Switch sePuedenAgregarMasArqueros={arqueros.length < 2} onChange={() => agregarJugadorComoArquero(jugador)}/>
+            <Switch 
+            onChange={() => agregarJugadorComoArquero(jugador)} 
+            isEnabled={arqueros.includes(jugador)}/>
           </div>
         ))}
         <button
