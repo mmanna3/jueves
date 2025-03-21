@@ -7,6 +7,7 @@ const App: React.FC = () => {
   const [arqueros, setArqueros] = useState<string[]>([]);
   const [equipos, setEquipos] = useState<string[][]>();
   const [textoBoton, setTextoBoton] = useState<string>("Armar Equipos");
+  const [error, setError] = useState<string>("");
 
   const handleChange = (index: number, value: string) => {
     const nuevosJugadores = [...jugadores];
@@ -16,12 +17,21 @@ const App: React.FC = () => {
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {    
     event.preventDefault();
-    console.log(jugadores.length)
-    if (jugadores.length === 15 && arqueros.length === 3) {
-      const nuevosEquipos = armarEquipos(jugadores, arqueros);
-      setEquipos(nuevosEquipos)
-      setTextoBoton("Armar de nuevo")
+    setError("");
+    
+    if (jugadores.length !== 15) {
+      setError("Debes ingresar 15 jugadores");
+      return;
     }
+
+    if (arqueros.length !== 3) {
+      setError("Debes seleccionar exactamente 3 arqueros");
+      return;
+    }
+
+    const nuevosEquipos = armarEquipos(jugadores, arqueros);
+    setEquipos(nuevosEquipos);
+    setTextoBoton("Armar de nuevo");
   };
 
   function agregarJugadorComoArquero(jugador: string) {
@@ -63,6 +73,11 @@ const App: React.FC = () => {
           </div>
         ))}
         <div className=''>
+          {error && (
+            <div className="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
+              {error}
+            </div>
+          )}
           {equipos && equipos.map((equipo, i) => 
           <div key={i} className='mb-4'>
             <p className='font-bold'>Equipo {i+1}</p>
